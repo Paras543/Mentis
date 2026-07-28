@@ -7,151 +7,167 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #0f1117;
-            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: #ffffff;
+            color: #111111;
             line-height: 1.6;
-            padding: 2rem;
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
         }
         header {
-            border-bottom: 2px solid #6366f1;
+            border-bottom: 2px solid #000000;
             padding-bottom: 1.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
         header h1 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #6366f1, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: -0.03em;
+            color: #000000;
+            text-transform: uppercase;
         }
-        .generated-at { color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem; }
+        .generated-at { color: #555555; font-size: 0.85rem; font-family: monospace; }
 
         section {
-            background: #1e2130;
-            border: 1px solid #2d3655;
-            border-radius: 12px;
+            border: 1px solid #000000;
             padding: 1.75rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            background: #ffffff;
         }
         section h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #a78bfa;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #000000;
             margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 0.75rem;
         }
         .score-badge {
             display: inline-block;
-            padding: 0.2rem 0.75rem;
-            border-radius: 999px;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid #000000;
             font-size: 0.8rem;
             font-weight: 700;
-            margin-left: 0.5rem;
+            font-family: monospace;
+            background: #000000;
+            color: #ffffff;
         }
-        .score-high   { background: #166534; color: #86efac; }
-        .score-mid    { background: #713f12; color: #fde68a; }
-        .score-low    { background: #7f1d1d; color: #fca5a5; }
 
-        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 0.5rem; }
         th {
             text-align: left;
-            padding: 0.6rem 1rem;
-            background: #2d3655;
-            color: #94a3b8;
-            font-weight: 600;
+            padding: 0.65rem 0.85rem;
+            background: #f4f4f4;
+            color: #000000;
+            font-weight: 700;
             text-transform: uppercase;
             font-size: 0.75rem;
             letter-spacing: 0.05em;
+            border-bottom: 1px solid #000000;
         }
-        td { padding: 0.6rem 1rem; border-bottom: 1px solid #2d3655; color: #cbd5e1; }
+        td { padding: 0.65rem 0.85rem; border-bottom: 1px solid #e0e0e0; color: #222222; }
         tr:last-child td { border-bottom: none; }
-        tr:hover td { background: #252b42; }
+        tr:hover td { background: #fafafa; }
 
         .badge {
             display: inline-block;
-            padding: 0.15rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
             text-transform: uppercase;
+            font-family: monospace;
+            border: 1px solid #000000;
         }
-        .badge-critical { background: #7f1d1d; color: #fca5a5; }
-        .badge-warning  { background: #713f12; color: #fde68a; }
-        .badge-info     { background: #1e3a5f; color: #93c5fd; }
-        .badge-passed   { background: #166534; color: #86efac; }
-        .badge-failed   { background: #7f1d1d; color: #fca5a5; }
-        .badge-drift    { background: #7f1d1d; color: #fca5a5; }
-        .badge-ok       { background: #166534; color: #86efac; }
+        .badge-critical { background: #000000; color: #ffffff; }
+        .badge-warning  { background: #555555; color: #ffffff; }
+        .badge-info     { background: #ffffff; color: #000000; }
+        .badge-passed   { background: #ffffff; color: #000000; border-color: #000000; }
+        .badge-failed   { background: #000000; color: #ffffff; }
+        .badge-drift    { background: #000000; color: #ffffff; }
+        .badge-ok       { background: #ffffff; color: #000000; }
 
         .stat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
         .stat-card {
-            background: #2d3655;
-            border-radius: 8px;
+            border: 1px solid #000000;
             padding: 1rem;
             text-align: center;
+            background: #ffffff;
         }
-        .stat-card .value { font-size: 1.6rem; font-weight: 800; color: #a78bfa; }
-        .stat-card .label { font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-card .value { font-size: 1.5rem; font-weight: 800; color: #000000; font-family: monospace; }
+        .stat-card .label { font-size: 0.7rem; color: #555555; margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
 
         pre {
-            background: #0f1117;
-            border: 1px solid #2d3655;
-            border-radius: 6px;
+            background: #f9f9f9;
+            border: 1px solid #cccccc;
             padding: 1rem;
             font-size: 0.8rem;
+            font-family: monospace;
             overflow-x: auto;
-            color: #94a3b8;
+            color: #111111;
             white-space: pre-wrap;
             word-break: break-all;
         }
+        code { font-family: monospace; background: #f0f0f0; padding: 0.1rem 0.4rem; border: 1px solid #e0e0e0; }
         footer {
             text-align: center;
-            color: #475569;
+            color: #666666;
             font-size: 0.8rem;
-            margin-top: 3rem;
+            margin-top: 4rem;
             padding-top: 1.5rem;
-            border-top: 1px solid #2d3655;
+            border-top: 1px solid #000000;
+            font-family: monospace;
         }
-        .empty-state { color: #475569; font-style: italic; text-align: center; padding: 1.5rem; }
+        .empty-state { color: #666666; font-style: italic; text-align: center; padding: 1.5rem; font-size: 0.85rem; }
         .degraded-alert {
-            background: #451a03;
-            border: 1px solid #92400e;
-            border-radius: 8px;
+            border: 1px solid #000000;
+            background: #000000;
+            color: #ffffff;
             padding: 0.75rem 1rem;
-            color: #fde68a;
             margin-bottom: 1rem;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
         .healthy-alert {
-            background: #052e16;
-            border: 1px solid #166534;
-            border-radius: 8px;
+            border: 1px solid #000000;
+            background: #ffffff;
+            color: #000000;
             padding: 0.75rem 1rem;
-            color: #86efac;
             margin-bottom: 1rem;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>🧠 Mentis Report</h1>
-        <p class="generated-at">Generated: {{ generated_at }}</p>
+        <div>
+            <h1>Mentis Report</h1>
+        </div>
+        <p class="generated-at">GENERATED: {{ generated_at }}</p>
     </header>
 
     {# ── Dataset Scan ─────────────────────────────────────────── #}
     {% if scan %}
     <section>
-        <h2>📊 Dataset Scan</h2>
+        <h2>Dataset Scan</h2>
         <div class="stat-grid">
             <div class="stat-card"><div class="value">{{ scan.n_rows | default('—') }}</div><div class="label">Rows</div></div>
             <div class="stat-card"><div class="value">{{ scan.n_columns | default('—') }}</div><div class="label">Columns</div></div>
@@ -165,7 +181,7 @@
             <tbody>
             {% for f in scan.findings %}
             <tr>
-                <td>{{ f.check_name }}</td>
+                <td><strong>{{ f.check_name }}</strong></td>
                 <td><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
                 <td>{{ f.message }}</td>
                 <td>{{ f.suggestion | default('—') }}</td>
@@ -174,7 +190,7 @@
             </tbody>
         </table>
         {% else %}
-        <p class="empty-state">✅ No findings — dataset looks clean.</p>
+        <p class="empty-state">No findings recorded. Dataset is clean.</p>
         {% endif %}
     </section>
     {% endif %}
@@ -182,7 +198,7 @@
     {# ── Model Comparison ─────────────────────────────────────── #}
     {% if comparison %}
     <section>
-        <h2>🏆 Model Comparison</h2>
+        <h2>Model Comparison</h2>
         {% if comparison.results %}
         <table>
             <thead>
@@ -209,7 +225,7 @@
             </tbody>
         </table>
         {% else %}
-        <p class="empty-state">No model results available.</p>
+        <p class="empty-state">No model comparison results available.</p>
         {% endif %}
     </section>
     {% endif %}
@@ -217,23 +233,26 @@
     {# ── Explainability ───────────────────────────────────────── #}
     {% if explain %}
     <section>
-        <h2>🔍 Explainability</h2>
+        <h2>Explainability</h2>
         {% if explain.shap %}
-        <p><strong>SHAP</strong> — Explainer type: <code>{{ explain.shap.explainer_type }}</code> · Base value: <code>{{ "%.4f"|format(explain.shap.base_value) }}</code></p>
+        <p style="margin-bottom:1rem;"><strong>SHAP:</strong> Explainer type = <code>{{ explain.shap.explainer_type }}</code> | Base value = <code>{{ "%.4f"|format(explain.shap.base_value) }}</code></p>
         {% endif %}
         {% if explain.permutation_importance %}
-        <br>
+        <p style="font-weight:700; margin-bottom:0.5rem; text-transform:uppercase; font-size:0.8rem;">Permutation Feature Importance</p>
         <table>
-            <thead><tr><th>Feature</th><th>Permutation Importance</th></tr></thead>
+            <thead><tr><th>Feature</th><th>Importance Mean</th></tr></thead>
             <tbody>
-            {% for feat, imp in explain.permutation_importance.items() | sort(attribute='1', reverse=True) %}
-            <tr><td>{{ feat }}</td><td>{{ "%.6f"|format(imp) }}</td></tr>
+            {% for feat, imp in explain.permutation_importance.items() %}
+            <tr>
+                <td><strong>{{ feat }}</strong></td>
+                <td>{% if imp is mapping %}{{ "%.6f"|format(imp.importance_mean) }}{% else %}{{ "%.6f"|format(imp) }}{% endif %}</td>
+            </tr>
             {% endfor %}
             </tbody>
         </table>
         {% endif %}
         {% if explain.confusion_matrix %}
-        <br><p><strong>Confusion Matrix:</strong></p>
+        <br><p style="font-weight:700; margin-bottom:0.5rem; text-transform:uppercase; font-size:0.8rem;">Confusion Matrix</p>
         <pre>{{ explain.confusion_matrix }}</pre>
         {% endif %}
     </section>
@@ -243,17 +262,14 @@
     {% if audit %}
     <section>
         {% set score = audit.score | float %}
-        {% if score >= 70 %}{% set cls = "score-high" %}
-        {% elif score >= 40 %}{% set cls = "score-mid" %}
-        {% else %}{% set cls = "score-low" %}{% endif %}
-        <h2>🔬 Pipeline Audit <span class="score-badge {{ cls }}">{{ score }}/100</span></h2>
+        <h2>Pipeline Audit <span class="score-badge">SCORE: {{ score }}/100</span></h2>
         <table>
             <thead><tr><th>Check</th><th>Status</th><th>Severity</th><th>Suggestion</th></tr></thead>
             <tbody>
             {% for f in audit.findings %}
             <tr>
-                <td>{{ f.name }}</td>
-                <td><span class="badge {{ 'badge-passed' if f.passed else 'badge-failed' }}">{{ '✓ Passed' if f.passed else '✗ Failed' }}</span></td>
+                <td><strong>{{ f.name }}</strong></td>
+                <td><span class="badge {{ 'badge-passed' if f.passed else 'badge-failed' }}">{{ 'PASSED' if f.passed else 'FAILED' }}</span></td>
                 <td>{% if not f.passed %}<span class="badge badge-{{ f.severity }}">{{ f.severity }}</span>{% else %}—{% endif %}</td>
                 <td>{% if not f.passed %}{{ f.suggestion }}{% else %}—{% endif %}</td>
             </tr>
@@ -267,20 +283,17 @@
     {% if deployment %}
     <section>
         {% set score = deployment.score | float %}
-        {% if score >= 70 %}{% set cls = "score-high" %}
-        {% elif score >= 40 %}{% set cls = "score-mid" %}
-        {% else %}{% set cls = "score-low" %}{% endif %}
-        <h2>🚀 Deployment Readiness <span class="score-badge {{ cls }}">{{ score }}/100</span></h2>
+        <h2>Deployment Readiness <span class="score-badge">SCORE: {{ score }}/100</span></h2>
         {% if deployment.detected_framework %}
-        <p style="margin-bottom:1rem;">Framework detected: <strong style="color:#a78bfa">{{ deployment.detected_framework }}</strong></p>
+        <p style="margin-bottom:1rem; font-size:0.85rem;">Framework Detected: <code>{{ deployment.detected_framework }}</code></p>
         {% endif %}
         <table>
             <thead><tr><th>Check</th><th>Status</th><th>Severity</th><th>Suggestion</th></tr></thead>
             <tbody>
             {% for f in deployment.findings %}
             <tr>
-                <td>{{ f.name }}</td>
-                <td><span class="badge {{ 'badge-passed' if f.passed else 'badge-failed' }}">{{ '✓ Passed' if f.passed else '✗ Failed' }}</span></td>
+                <td><strong>{{ f.name }}</strong></td>
+                <td><span class="badge {{ 'badge-passed' if f.passed else 'badge-failed' }}">{{ 'PASSED' if f.passed else 'FAILED' }}</span></td>
                 <td>{% if not f.passed %}<span class="badge badge-{{ f.severity }}">{{ f.severity }}</span>{% else %}—{% endif %}</td>
                 <td>{% if not f.passed %}{{ f.suggestion }}{% else %}—{% endif %}</td>
             </tr>
@@ -293,7 +306,7 @@
     {# ── Bias / Fairness ──────────────────────────────────────── #}
     {% if bias %}
     <section>
-        <h2>⚖️ Bias / Fairness</h2>
+        <h2>Bias / Fairness Audit</h2>
         <table>
             <thead><tr><th>Sensitive Feature</th><th>Demo. Parity Diff</th><th>Equal Opp. Diff</th><th>Equalized Odds Diff</th></tr></thead>
             <tbody>
@@ -313,10 +326,10 @@
     {# ── Data Drift ───────────────────────────────────────────── #}
     {% if drift %}
     <section>
-        <h2>📉 Data Drift</h2>
+        <h2>Data Drift Detection</h2>
         <div class="stat-grid">
             <div class="stat-card">
-                <div class="value" style="color:{{ '#fca5a5' if drift.dataset_drift else '#86efac' }}">{{ 'YES' if drift.dataset_drift else 'NO' }}</div>
+                <div class="value">{{ 'YES' if drift.dataset_drift else 'NO' }}</div>
                 <div class="label">Dataset Drift</div>
             </div>
             <div class="stat-card">
@@ -326,12 +339,12 @@
         </div>
         {% if drift.feature_drift %}
         <table>
-            <thead><tr><th>Feature</th><th>Drift Detected</th><th>Drift Score</th><th>Stat Test</th></tr></thead>
+            <thead><tr><th>Feature</th><th>Status</th><th>Drift Score</th><th>Stat Test</th></tr></thead>
             <tbody>
             {% for col, info in drift.feature_drift.items() %}
             <tr>
-                <td>{{ col }}</td>
-                <td><span class="badge {{ 'badge-drift' if info.drift_detected else 'badge-ok' }}">{{ 'Drift' if info.drift_detected else 'OK' }}</span></td>
+                <td><strong>{{ col }}</strong></td>
+                <td><span class="badge {{ 'badge-drift' if info.drift_detected else 'badge-ok' }}">{{ 'DRIFT' if info.drift_detected else 'OK' }}</span></td>
                 <td>{{ "%.4f"|format(info.drift_score) }}</td>
                 <td>{{ info.stattest_name | default('—') }}</td>
             </tr>
@@ -345,11 +358,11 @@
     {# ── Monitoring ───────────────────────────────────────────── #}
     {% if monitoring %}
     <section>
-        <h2>📡 Monitoring</h2>
+        <h2>Monitoring Snapshot</h2>
         {% if monitoring.degraded %}
-        <div class="degraded-alert">⚠️ Model degradation detected — one or more metrics dropped beyond tolerance.</div>
+        <div class="degraded-alert">ALERT: Model performance degradation detected. One or more metrics dropped beyond tolerance.</div>
         {% else %}
-        <div class="healthy-alert">✅ Model health looks stable — no degradation detected.</div>
+        <div class="healthy-alert">STATUS: Model performance is stable. No degradation detected.</div>
         {% endif %}
         {% if monitoring.performance_metrics %}
         <table>
@@ -357,7 +370,7 @@
             <tbody>
             {% for name, val in monitoring.performance_metrics.items() %}
             <tr>
-                <td>{{ name }}</td>
+                <td><strong>{{ name }}</strong></td>
                 <td>{{ "%.4f"|format(val) }}</td>
                 <td>{% if monitoring.performance_delta and name in monitoring.performance_delta %}{{ "%.4f"|format(monitoring.performance_delta[name]) }}{% else %}—{% endif %}</td>
             </tr>
@@ -369,15 +382,15 @@
         <br>
         <div class="stat-grid">
             <div class="stat-card"><div class="value">{{ monitoring.data_quality.row_count | int }}</div><div class="label">Row Count</div></div>
-            <div class="stat-card"><div class="value">{{ "%.2f"|format(monitoring.data_quality.missing_pct) }}%</div><div class="label">Missing</div></div>
-            <div class="stat-card"><div class="value">{{ "%.2f"|format(monitoring.data_quality.duplicate_pct) }}%</div><div class="label">Duplicates</div></div>
+            <div class="stat-card"><div class="value">{{ "%.2f"|format(monitoring.data_quality.missing_pct) }}%</div><div class="label">Missing %</div></div>
+            <div class="stat-card"><div class="value">{{ "%.2f"|format(monitoring.data_quality.duplicate_pct) }}%</div><div class="label">Duplicates %</div></div>
         </div>
         {% endif %}
     </section>
     {% endif %}
 
     <footer>
-        <p>Generated by <strong>Mentis</strong> · {{ generated_at }}</p>
+        <p>GENERATED BY MENTIS · {{ generated_at }}</p>
     </footer>
 </body>
 </html>
