@@ -1,0 +1,149 @@
+# =========================
+# Python
+# =========================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+
+# PyPI build files
+*.whl
+
+
+# =========================
+# Jupyter Notebook
+# =========================
+
+.ipynb_checkpoints/
+
+
+# =========================
+# Testing
+# =========================
+
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+
+# =========================
+# Type Checking
+# =========================
+
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+
+# =========================
+# Linters / Formatters
+# =========================
+
+.ruff_cache/
+.black_cache/
+
+
+# =========================
+# ML Artifacts
+# =========================
+
+# Trained models
+models/
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.pt
+*.pth
+
+# Experiment tracking
+mlruns/
+wandb/
+runs/
+
+
+# =========================
+# Data
+# =========================
+
+# Raw datasets
+data/raw/
+
+# Processed datasets
+data/processed/
+
+# Large files
+*.csv
+*.parquet
+*.jsonl
+
+
+# =========================
+# Reports
+# =========================
+
+reports/
+*.html
+*.pdf
+
+
+# =========================
+# Documentation
+# =========================
+
+docs/site/
+
+
+# =========================
+# IDE
+# =========================
+
+.vscode/
+.idea/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+
+# =========================
+# Environment Variables
+# =========================
+
+.env
+.env.*
+!.env.example
+
+
+# =========================
+# Logs
+# =========================
+
+*.log
+
+
+# =========================
+# OS temporary files
+# =========================
+
+*.tmp
+*.swp
+
+

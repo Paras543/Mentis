@@ -1,0 +1,99 @@
+# =========================
+# Core Data Science
+# =========================
+
+numpy
+pandas
+scipy
+
+# =========================
+# Machine Learning
+# =========================
+
+scikit-learn
+xgboost
+lightgbm
+catboost
+
+
+# =========================
+# Explainability
+# =========================
+
+shap
+
+
+# =========================
+# Data Quality / Monitoring
+# =========================
+
+evidently
+fairlearn
+
+
+# =========================
+# Visualization
+# =========================
+
+matplotlib
+plotly
+seaborn
+
+
+# =========================
+# Reports
+# =========================
+
+jinja2
+weasyprint
+
+
+# =========================
+# CLI
+# =========================
+
+typer
+rich
+
+
+# =========================
+# Configuration
+# =========================
+
+pydantic
+pyyaml
+
+
+# =========================
+# Testing
+# =========================
+
+pytest
+pytest-cov
+
+
+# =========================
+# Code Quality
+# =========================
+
+ruff
+black
+mypy
+
+
+# =========================
+# Documentation
+# =========================
+
+mkdocs
+mkdocs-material
+
+
+# =========================
+# Packaging
+# =========================
+
+build
+twine
+
+
