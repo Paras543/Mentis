@@ -96,12 +96,13 @@ class DriftDetector:
                 column_mapping = ColumnMapping(target=target, prediction=prediction)
 
         report = Report(metrics=[DataDriftPreset()])
+        _report_any: Any = report
         if column_mapping is not None:
-            res_run = report.run(
+            res_run = _report_any.run(
                 reference_data=reference, current_data=current, column_mapping=column_mapping
             )
         else:
-            res_run = report.run(reference_data=reference, current_data=current)
+            res_run = _report_any.run(reference_data=reference, current_data=current)
 
         if hasattr(report, "as_dict"):
             result_dict = report.as_dict()

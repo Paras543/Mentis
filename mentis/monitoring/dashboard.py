@@ -154,7 +154,7 @@ class ModelMonitor:
     @classmethod
     def _summarize_features(cls, df: pd.DataFrame) -> dict[str, dict[str, float]]:
         summary: dict[str, dict[str, float]] = {}
-        for col in df.select_dtypes(include=[np.number]).columns:
+        for col in df.select_dtypes(include="number").columns:
             summary[str(col)] = cls._summarize_array(df[col].dropna().to_numpy())
         return summary
 

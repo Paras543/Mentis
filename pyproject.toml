@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mentis"
-version = "0.1.1"
+version = "0.1.2"
 description = "An AI engineer's toolkit: dataset scanning, model comparison, explainability, auditing, deployment checks, monitoring, and professional reporting behind a single API."
 readme = "README.md"
 license = { file = "LICENSE" }

@@ -165,7 +165,7 @@ class NearZeroVarianceCheck(BaseCheck):
         if n_rows == 0:
             return findings
 
-        numeric_cols = df.select_dtypes(include=np.number).columns
+        numeric_cols = df.select_dtypes(include="number").columns
         for col in numeric_cols:
             series = df[col].dropna()
             if series.empty:
@@ -204,7 +204,7 @@ class HighCorrelationCheck(BaseCheck):
         self.threshold = threshold
 
     def run(self, df: pd.DataFrame, **context: object) -> list[Finding]:
-        numeric_df = df.select_dtypes(include=np.number)
+        numeric_df = df.select_dtypes(include="number")
         if numeric_df.shape[1] < 2:
             return []
 
@@ -244,7 +244,7 @@ class OutlierCheck(BaseCheck):
 
     def run(self, df: pd.DataFrame, **context: object) -> list[Finding]:
         findings: list[Finding] = []
-        numeric_cols = df.select_dtypes(include=np.number).columns
+        numeric_cols = df.select_dtypes(include="number").columns
 
         for col in numeric_cols:
             series = df[col].dropna()
@@ -282,7 +282,7 @@ class InfiniteValuesCheck(BaseCheck):
 
     def run(self, df: pd.DataFrame, **context: object) -> list[Finding]:
         findings: list[Finding] = []
-        numeric_df = df.select_dtypes(include=np.number)
+        numeric_df = df.select_dtypes(include="number")
 
         for col in numeric_df.columns:
             n_inf = int(np.isinf(numeric_df[col]).sum())
@@ -404,7 +404,7 @@ class DataLeakageCheck(BaseCheck):
             return []
 
         findings: list[Finding] = []
-        numeric_df = df.select_dtypes(include=np.number)
+        numeric_df = df.select_dtypes(include="number")
 
         for col in numeric_df.columns:
             if col == target:

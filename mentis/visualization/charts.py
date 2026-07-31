@@ -66,7 +66,7 @@ class ChartGenerator:
             >>> charts = ChartGenerator()
             >>> path = charts.correlation_heatmap(df)  # doctest: +SKIP
         """
-        numeric_df = df.select_dtypes(include=[np.number])
+        numeric_df = df.select_dtypes(include="number")
         if numeric_df.shape[1] < 2:
             raise ValidationError("Need at least 2 numerical columns for a correlation heatmap.")
 
@@ -134,7 +134,7 @@ class ChartGenerator:
             ax.hist(series.dropna(), bins=30, color="#4C72B0", edgecolor="white")
         else:
             counts = series.value_counts()
-            ax.bar(counts.index.astype(str), counts.values, color="#4C72B0")
+            ax.bar(counts.index.astype(str), counts.to_list(), color="#4C72B0")
             ax.tick_params(axis="x", rotation=45)
         ax.set_title(title or f"Distribution of {series.name}")
         fig.tight_layout()

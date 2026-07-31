@@ -76,6 +76,9 @@ mlruns/
 wandb/
 runs/
 
+# CatBoost training logs
+catboost_info/
+
 
 # =========================
 # Data
@@ -100,6 +103,16 @@ data/processed/
 reports/
 *.html
 *.pdf
+
+# Named mentis output directories
+*_reports/
+mentis_reports/
+scan_reports/
+cleaned_reports/
+
+# CI coverage artefact
+coverage.xml
+.coverage
 
 
 # =========================

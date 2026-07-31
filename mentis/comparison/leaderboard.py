@@ -89,7 +89,7 @@ class Leaderboard:
 
         rows = []
         for r in self.results:
-            row = {"model": r.model_name, "error": r.error}
+            row: dict[str, Any] = {"model": r.model_name, "error": r.error}
             row.update(r.metrics)
             row["cv_mean"] = r.cv_mean
             row["cv_std"] = r.cv_std

@@ -55,7 +55,7 @@ def compute_permutation_importance(
         True
     """
     try:
-        result = sk_permutation_importance(
+        result: Any = sk_permutation_importance(
             model,
             X,
             y,
