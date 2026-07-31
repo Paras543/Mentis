@@ -683,7 +683,7 @@ except MentisError as e:
 
 MIT — see [`LICENSE`](LICENSE).# Mentis
 
-## Documentation : https://mentis-documentation.vercel.app/docs/installation
+## Documentation : https://mentis-documentation.vercel.app
 
 
 ## Read More 
