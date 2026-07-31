@@ -25,6 +25,7 @@ SEED = 42
 
 # ── Raw DataFrames ────────────────────────────────────────────────────────────
 
+
 @pytest.fixture
 def clean_df() -> pd.DataFrame:
     """A small, fully clean DataFrame with no issues."""
@@ -93,6 +94,7 @@ def leakage_df() -> pd.DataFrame:
 
 # ── Classification split ──────────────────────────────────────────────────────
 
+
 @pytest.fixture
 def classification_split():
     """Train/test split from sklearn's make_classification."""
@@ -128,6 +130,7 @@ def y_test_clf(classification_split):
 
 # ── Regression split ──────────────────────────────────────────────────────────
 
+
 @pytest.fixture
 def regression_split():
     """Train/test split from sklearn's make_regression."""
@@ -159,6 +162,7 @@ def y_test_reg(regression_split):
 
 # ── Fitted models ─────────────────────────────────────────────────────────────
 
+
 @pytest.fixture
 def fitted_clf(X_train_clf, y_train_clf) -> RandomForestClassifier:
     model = RandomForestClassifier(n_estimators=10, random_state=SEED)
@@ -189,6 +193,7 @@ def fitted_rf_reg(X_train_reg, y_train_reg) -> RandomForestRegressor:
 
 # ── Guardian instances ────────────────────────────────────────────────────────
 
+
 @pytest.fixture
 def guardian() -> Guardian:
     """Default Guardian with classification task."""
@@ -199,11 +204,15 @@ def guardian() -> Guardian:
 def clf_guardian() -> Guardian:
     """Guardian configured for classification."""
     from mentis.config import ProjectConfig
-    return Guardian(config=MentisConfig(project=ProjectConfig(task="classification", target="target")))
+
+    return Guardian(
+        config=MentisConfig(project=ProjectConfig(task="classification", target="target"))
+    )
 
 
 @pytest.fixture
 def reg_guardian() -> Guardian:
     """Guardian configured for regression."""
     from mentis.config import ProjectConfig
+
     return Guardian(config=MentisConfig(project=ProjectConfig(task="regression")))

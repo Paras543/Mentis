@@ -17,11 +17,41 @@ from mentis.utils.logger import get_logger
 logger = get_logger(__name__)
 
 _FILE_CHECKS: list[tuple[str, str, str, int, str]] = [
-    ("dockerfile", "Dockerfile", SEVERITY_CRITICAL, 15, "Add a Dockerfile to containerize the service."),
-    ("docker_compose", "docker-compose.yml", SEVERITY_WARNING, 8, "Add docker-compose.yml for local orchestration."),
-    ("k8s_manifests", "k8s", SEVERITY_WARNING, 10, "Add Kubernetes manifests (k8s/) for cluster deployment."),
-    ("env_vars", ".env.example", SEVERITY_WARNING, 5, "Add .env.example documenting required environment variables."),
-    ("secrets_template", "secrets.example.yaml", SEVERITY_INFO, 3, "Document secrets management (without committing real secrets)."),
+    (
+        "dockerfile",
+        "Dockerfile",
+        SEVERITY_CRITICAL,
+        15,
+        "Add a Dockerfile to containerize the service.",
+    ),
+    (
+        "docker_compose",
+        "docker-compose.yml",
+        SEVERITY_WARNING,
+        8,
+        "Add docker-compose.yml for local orchestration.",
+    ),
+    (
+        "k8s_manifests",
+        "k8s",
+        SEVERITY_WARNING,
+        10,
+        "Add Kubernetes manifests (k8s/) for cluster deployment.",
+    ),
+    (
+        "env_vars",
+        ".env.example",
+        SEVERITY_WARNING,
+        5,
+        "Add .env.example documenting required environment variables.",
+    ),
+    (
+        "secrets_template",
+        "secrets.example.yaml",
+        SEVERITY_INFO,
+        3,
+        "Document secrets management (without committing real secrets).",
+    ),
 ]
 
 _APP_ENTRYPOINTS: list[str] = ["main.py", "app.py", "server.py", "api.py"]
@@ -76,7 +106,8 @@ class DeploymentResult:
     def failed(self, severity: str | None = None) -> list[DeploymentFinding]:
         """Return failed findings, optionally filtered by severity."""
         return [
-            f for f in self.findings
+            f
+            for f in self.findings
             if not f.passed and (severity is None or f.severity == severity)
         ]
 
@@ -90,7 +121,9 @@ class DeploymentResult:
 
     def __repr__(self) -> str:
         n_failed = len(self.failed())
-        return f"<DeploymentResult score={self.score:.1f}/100 failed={n_failed}/{len(self.findings)}>"
+        return (
+            f"<DeploymentResult score={self.score:.1f}/100 failed={n_failed}/{len(self.findings)}>"
+        )
 
 
 class DeploymentChecker:
@@ -129,7 +162,9 @@ class DeploymentChecker:
             if passed:
                 earned += weight
             findings.append(
-                DeploymentFinding(name=name, passed=passed, severity=severity, suggestion=suggestion)
+                DeploymentFinding(
+                    name=name, passed=passed, severity=severity, suggestion=suggestion
+                )
             )
 
         source_text = self._read_entrypoint_source(project_path)
@@ -187,7 +222,7 @@ class DeploymentChecker:
             full_path = os.path.join(project_path, entry)
             if os.path.exists(full_path):
                 try:
-                    with open(full_path, "r", encoding="utf-8", errors="ignore") as f:
+                    with open(full_path, encoding="utf-8", errors="ignore") as f:
                         combined += f.read() + "\n"
                 except OSError as exc:
                     logger.warning(f"Could not read {full_path}: {exc}")
@@ -199,6 +234,3 @@ class DeploymentChecker:
             if re.search(pattern, source_text):
                 return name
         return None
-    
-
-    

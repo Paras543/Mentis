@@ -4,12 +4,11 @@ Tests for mentis/comparison/trainer.py — ModelTrainer orchestrator.
 
 from __future__ import annotations
 
-import numpy as np
 import pytest
 
 from mentis.comparison.leaderboard import Leaderboard, ModelResult
 from mentis.comparison.trainer import ModelTrainer
-from mentis.exceptions import ModelError, ValidationError
+from mentis.exceptions import ModelError
 
 
 class TestModelTrainerInit:
@@ -29,9 +28,7 @@ class TestModelTrainerInit:
 
 
 class TestModelTrainerRun:
-    def test_returns_leaderboard_clf(
-        self, X_train_clf, X_test_clf, y_train_clf, y_test_clf
-    ):
+    def test_returns_leaderboard_clf(self, X_train_clf, X_test_clf, y_train_clf, y_test_clf):
         trainer = ModelTrainer(
             task="classification",
             models=["Logistic Regression", "Decision Tree"],
@@ -40,9 +37,7 @@ class TestModelTrainerRun:
         lb = trainer.run(X_train_clf, X_test_clf, y_train_clf, y_test_clf)
         assert isinstance(lb, Leaderboard)
 
-    def test_returns_leaderboard_reg(
-        self, X_train_reg, X_test_reg, y_train_reg, y_test_reg
-    ):
+    def test_returns_leaderboard_reg(self, X_train_reg, X_test_reg, y_train_reg, y_test_reg):
         trainer = ModelTrainer(
             task="regression",
             models=["Linear Regression", "Ridge"],
@@ -51,9 +46,7 @@ class TestModelTrainerRun:
         lb = trainer.run(X_train_reg, X_test_reg, y_train_reg, y_test_reg)
         assert isinstance(lb, Leaderboard)
 
-    def test_leaderboard_has_results(
-        self, X_train_clf, X_test_clf, y_train_clf, y_test_clf
-    ):
+    def test_leaderboard_has_results(self, X_train_clf, X_test_clf, y_train_clf, y_test_clf):
         trainer = ModelTrainer(
             task="classification",
             models=["Logistic Regression"],
@@ -62,9 +55,7 @@ class TestModelTrainerRun:
         lb = trainer.run(X_train_clf, X_test_clf, y_train_clf, y_test_clf)
         assert len(lb.results) >= 1
 
-    def test_best_model_is_a_model_result(
-        self, X_train_clf, X_test_clf, y_train_clf, y_test_clf
-    ):
+    def test_best_model_is_a_model_result(self, X_train_clf, X_test_clf, y_train_clf, y_test_clf):
         trainer = ModelTrainer(
             task="classification",
             models=["Logistic Regression", "Decision Tree"],
@@ -73,9 +64,7 @@ class TestModelTrainerRun:
         lb = trainer.run(X_train_clf, X_test_clf, y_train_clf, y_test_clf)
         assert isinstance(lb.best_model(), ModelResult)
 
-    def test_all_results_have_metrics(
-        self, X_train_clf, X_test_clf, y_train_clf, y_test_clf
-    ):
+    def test_all_results_have_metrics(self, X_train_clf, X_test_clf, y_train_clf, y_test_clf):
         trainer = ModelTrainer(
             task="classification",
             models=["Logistic Regression"],
@@ -86,9 +75,7 @@ class TestModelTrainerRun:
             if r.error is None:
                 assert "f1" in r.metrics
 
-    def test_length_mismatch_raises(
-        self, X_train_clf, X_test_clf, y_train_clf, y_test_clf
-    ):
+    def test_length_mismatch_raises(self, X_train_clf, X_test_clf, y_train_clf, y_test_clf):
         trainer = ModelTrainer(task="classification", models=["Logistic Regression"], cv=2)
         with pytest.raises(Exception):
             trainer.run(X_train_clf, X_test_clf, y_train_clf[:5], y_test_clf)
@@ -98,6 +85,7 @@ class TestModelTrainerRun:
     ):
         """Passing string data to models that require numeric should fail all."""
         import pandas as pd
+
         X_bad = pd.DataFrame({"a": ["x", "y"] * (len(X_train_clf) // 2)})
         X_test_bad = pd.DataFrame({"a": ["x", "y"] * (len(X_test_clf) // 2)})
         trainer = ModelTrainer(

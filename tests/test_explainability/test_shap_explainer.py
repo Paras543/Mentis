@@ -48,6 +48,7 @@ class TestComputeShapValues:
     def test_large_input_is_sampled(self, fitted_clf, X_test_clf):
         """When input > 500 rows, SHAP should sample it down."""
         import pandas as pd
+
         big_X = pd.concat([X_test_clf] * 20, ignore_index=True)
         assert len(big_X) > 500
         result = compute_shap_values(fitted_clf, big_X)
@@ -57,10 +58,12 @@ class TestComputeShapValues:
 
     def test_raises_when_both_explainers_fail(self):
         """A model that's not sklearn-compatible should raise ExplainabilityError."""
+
         class FakeModel:
             pass
 
         import pandas as pd
+
         X = pd.DataFrame({"a": [1, 2, 3]})
         with pytest.raises(ExplainabilityError):
             compute_shap_values(FakeModel(), X)

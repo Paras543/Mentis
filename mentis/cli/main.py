@@ -11,7 +11,7 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from mentis import Guardian, MentisConfig
+from mentis import Guardian
 from mentis.exceptions import MentisError
 
 app = typer.Typer(name="mentis", help="Mentis: an AI engineer's toolkit.")
@@ -47,7 +47,7 @@ def scan(
             result = guardian.scan(df, target=target)
         except MentisError as exc:
             console.print(f"[red]Scan failed: {exc}[/red]")
-            raise typer.Exit(code=1)
+            raise typer.Exit(code=1) from exc
 
     console.print(result)
     for finding in result.warnings():
@@ -79,7 +79,7 @@ def compare(
             leaderboard = guardian.compare_models(X_train, X_test, y_train, y_test)
         except MentisError as exc:
             console.print(f"[red]Comparison failed: {exc}[/red]")
-            raise typer.Exit(code=1)
+            raise typer.Exit(code=1) from exc
 
     table = Table(title="Model Leaderboard")
     table.add_column("Model")
@@ -91,9 +91,7 @@ def compare(
 
 
 @app.command()
-def audit(
-    project_path: str = typer.Argument(".", help="Path to the project to audit.")
-) -> None:
+def audit(project_path: str = typer.Argument(".", help="Path to the project to audit.")) -> None:
     """Audit an ML project's structure and production readiness."""
     guardian = Guardian()
     with console.status("Auditing project..."):
@@ -101,7 +99,9 @@ def audit(
 
     console.print(f"[bold]Production Readiness Score: {result.score}/100[/bold]")
     for finding in result.failed():
-        console.print(f"[yellow]✗ {finding.name}[/yellow] ({finding.severity}) -> {finding.suggestion}")
+        console.print(
+            f"[yellow]✗ {finding.name}[/yellow] ({finding.severity}) -> {finding.suggestion}"
+        )
 
 
 @app.command(name="deploy-check")
@@ -117,12 +117,16 @@ def deploy_check(
     if result.detected_framework:
         console.print(f"Framework detected: {result.detected_framework}")
     for finding in result.failed():
-        console.print(f"[yellow]✗ {finding.name}[/yellow] ({finding.severity}) -> {finding.suggestion}")
+        console.print(
+            f"[yellow]✗ {finding.name}[/yellow] ({finding.severity}) -> {finding.suggestion}"
+        )
 
 
 @app.command()
 def report(
-    data: str | None = typer.Option(None, help="Path to CSV/Parquet dataset (optional, enables scan)."),
+    data: str | None = typer.Option(
+        None, help="Path to CSV/Parquet dataset (optional, enables scan)."
+    ),
     target: str | None = typer.Option(None, help="Target column name."),
     project_path: str = typer.Option(".", help="Project path for audit + deploy checks."),
     output_dir: str = typer.Option("mentis_reports", help="Output directory for the report."),
@@ -160,7 +164,7 @@ def report(
             path = guardian.generate_report(output_path=output_dir, fmt=fmt)
         except MentisError as exc:
             console.print(f"[red]Report generation failed: {exc}[/red]")
-            raise typer.Exit(code=1)
+            raise typer.Exit(code=1) from exc
 
     console.print(f"[green]✓ Report written to:[/green] {path}")
 
@@ -171,7 +175,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
-
-    

@@ -14,28 +14,28 @@ from typing import Any
 
 import pandas as pd
 
-from mentis.config import MentisConfig
-from mentis.scanner.dataset_scanner import DatasetScanner
-from mentis.scanner.result import ScanResult
-from mentis.utils.logger import get_logger
-from mentis.comparison.trainer import ModelTrainer
 from mentis.comparison.leaderboard import Leaderboard
-from mentis.explainability.permutation import compute_permutation_importance
-from mentis.explainability.shap_explainer import compute_shap_values
+from mentis.comparison.trainer import ModelTrainer
+from mentis.config import MentisConfig
+from mentis.deployment.checker import DeploymentChecker, DeploymentResult
 from mentis.explainability.curves import (
     compute_calibration_curve,
     compute_confusion_matrix,
-    compute_learning_curve,
     compute_pr_curve,
     compute_residuals,
     compute_roc_curve,
 )
-from mentis.validation.auditor import AuditResult, PipelineAuditor
-from mentis.deployment.checker import DeploymentChecker, DeploymentResult
-from mentis.monitoring.drift import DriftDetector
-from mentis.validation.fairness import BiasDetector, FairnessResult
+from mentis.explainability.permutation import compute_permutation_importance
+from mentis.explainability.shap_explainer import compute_shap_values
 from mentis.monitoring.dashboard import ModelMonitor, MonitoringSnapshot
+from mentis.monitoring.drift import DriftDetector
 from mentis.reporting.report_builder import ReportBuilder
+from mentis.scanner.dataset_scanner import DatasetScanner
+from mentis.scanner.result import ScanResult
+from mentis.utils.logger import get_logger
+from mentis.validation.auditor import AuditResult, PipelineAuditor
+from mentis.validation.fairness import BiasDetector, FairnessResult
+
 logger = get_logger(__name__)
 
 
@@ -78,7 +78,7 @@ class Guardian:
         self.last_monitoring_result: Any | None = None
 
     @classmethod
-    def from_yaml(cls, path: str) -> "Guardian":
+    def from_yaml(cls, path: str) -> Guardian:
         """
         Construct a `Guardian` from a YAML configuration file.
 
@@ -130,7 +130,6 @@ class Guardian:
         task: str | None = None,
         models: list[str] | None = None,
         cv: int | None = None,
-
         **kwargs: Any,
     ) -> Leaderboard:
         """
@@ -173,6 +172,7 @@ class Guardian:
 
         self.last_comparison_result = leaderboard
         return leaderboard
+
     def explain(
         self,
         model: Any,
@@ -271,7 +271,9 @@ class Guardian:
                         except Exception as exc:  # noqa: BLE001
                             logger.warning(f"PR curve skipped: {exc}")
                         try:
-                            report["calibration_curve"] = compute_calibration_curve(y, resolved_proba)
+                            report["calibration_curve"] = compute_calibration_curve(
+                                y, resolved_proba
+                            )
                         except Exception as exc:  # noqa: BLE001
                             logger.warning(f"Calibration curve skipped: {exc}")
                 else:
@@ -316,8 +318,6 @@ class Guardian:
         result = auditor.audit(project_path)
         self.last_audit_result = result
         return result
-    
-    
 
     def deploy_check(self, project_path: str = ".") -> DeploymentResult:
         """
@@ -339,7 +339,7 @@ class Guardian:
         result = checker.check(project_path)
         self.last_deployment_result = result
         return result
-    
+
     def check_drift(
         self,
         reference: pd.DataFrame,
@@ -374,7 +374,7 @@ class Guardian:
         result = detector.detect(reference, current, target=target, prediction=prediction)
         self.last_drift_result = result
         return result
-    
+
     def check_bias(
         self,
         y_true: Any,
@@ -401,15 +401,15 @@ class Guardian:
                 not installed.
 
         Examples:
-            >>> guardian = Guardian()
-            >>> results = guardian.check_bias(y_test, y_pred, {"gender": df["gender"]})  # doctest: +SKIP
+            >>> sens = {"gender": df["gender"]}  # doctest: +SKIP
+            >>> results = guardian.check_bias(y_test, y_pred, sens)  # doctest: +SKIP
             >>> results[0].demographic_parity_difference  # doctest: +SKIP
         """
         detector = BiasDetector()
         results = detector.detect(y_true, y_pred, sensitive_features)
         self.last_bias_result = results
         return results
-    
+
     def monitor(
         self,
         current_data: pd.DataFrame,
@@ -491,5 +491,3 @@ class Guardian:
 
     def __repr__(self) -> str:
         return f"<Guardian task={self.config.project.task!r} target={self.config.project.target!r}>"
-    
-

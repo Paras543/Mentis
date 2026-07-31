@@ -36,7 +36,11 @@ class TestModelMonitor:
         baseline = {"f1": 0.90}
         current = {"f1": 0.70}  # -22.2% drop > 5% tolerance
         snapshot = ModelMonitor().snapshot(
-            clean_df, preds, current_metrics=current, baseline_metrics=baseline, degradation_tolerance=0.05
+            clean_df,
+            preds,
+            current_metrics=current,
+            baseline_metrics=baseline,
+            degradation_tolerance=0.05,
         )
         assert snapshot.degraded is True
         assert "f1" in snapshot.performance_delta
@@ -46,7 +50,11 @@ class TestModelMonitor:
         baseline = {"f1": 0.90}
         current = {"f1": 0.88}  # -2.2% drop < 5% tolerance
         snapshot = ModelMonitor().snapshot(
-            clean_df, preds, current_metrics=current, baseline_metrics=baseline, degradation_tolerance=0.05
+            clean_df,
+            preds,
+            current_metrics=current,
+            baseline_metrics=baseline,
+            degradation_tolerance=0.05,
         )
         assert snapshot.degraded is False
 

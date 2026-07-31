@@ -13,6 +13,7 @@ import os
 from typing import Any
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
@@ -45,7 +46,9 @@ class ChartGenerator:
         """
         self.output_dir = ensure_directory(output_dir)
 
-    def correlation_heatmap(self, df: pd.DataFrame, filename: str = "correlation_heatmap.png") -> str:
+    def correlation_heatmap(
+        self, df: pd.DataFrame, filename: str = "correlation_heatmap.png"
+    ) -> str:
         """
         Plot a correlation heatmap for numerical columns.
 
@@ -165,7 +168,7 @@ class ChartGenerator:
             raise ValidationError("'importances' must not be empty.")
 
         sorted_items = sorted(importances.items(), key=lambda kv: kv[1], reverse=True)[:top_n]
-        names, values = zip(*sorted_items)
+        names, values = zip(*sorted_items, strict=False)
 
         fig, ax = plt.subplots(figsize=_DEFAULT_FIGSIZE)
         ax.barh(range(len(names)), values, color="#55A868")
@@ -197,7 +200,7 @@ class ChartGenerator:
         values = np.asarray(shap_result["shap_values"])
         feature_names = shap_result["feature_names"]
         mean_abs = np.abs(values).mean(axis=0)
-        importances = dict(zip(feature_names, mean_abs.tolist()))
+        importances = dict(zip(feature_names, mean_abs.tolist(), strict=False))
         return self.feature_importance(importances, filename=filename)
 
     def roc_curve(self, curve: dict[str, list[float]], filename: str = "roc_curve.png") -> str:
@@ -269,7 +272,12 @@ class ChartGenerator:
             >>> path = charts.calibration_curve(curve)  # doctest: +SKIP
         """
         fig, ax = plt.subplots(figsize=_DEFAULT_FIGSIZE)
-        ax.plot(curve["mean_predicted_value"], curve["fraction_of_positives"], marker="o", color="#4C72B0")
+        ax.plot(
+            curve["mean_predicted_value"],
+            curve["fraction_of_positives"],
+            marker="o",
+            color="#4C72B0",
+        )
         ax.plot([0, 1], [0, 1], linestyle="--", color="gray")
         ax.set_xlabel("Mean Predicted Probability")
         ax.set_ylabel("Fraction of Positives")
@@ -277,7 +285,9 @@ class ChartGenerator:
         fig.tight_layout()
         return self._save(fig, filename)
 
-    def residual_plot(self, residuals: dict[str, list[float]], filename: str = "residual_plot.png") -> str:
+    def residual_plot(
+        self, residuals: dict[str, list[float]], filename: str = "residual_plot.png"
+    ) -> str:
         """
         Plot residuals vs. predicted values from a `compute_residuals`
         result.
@@ -303,7 +313,9 @@ class ChartGenerator:
         fig.tight_layout()
         return self._save(fig, filename)
 
-    def learning_curve(self, curve: dict[str, list[float]], filename: str = "learning_curve.png") -> str:
+    def learning_curve(
+        self, curve: dict[str, list[float]], filename: str = "learning_curve.png"
+    ) -> str:
         """
         Plot a learning curve from a `compute_learning_curve` result.
 

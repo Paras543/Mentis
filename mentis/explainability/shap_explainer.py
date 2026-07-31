@@ -67,7 +67,8 @@ def compute_shap_values(model: Any, X: Any) -> dict[str, Any]:
     X_sample = truncate_dataframe_for_heavy_ops(X, _MAX_SHAP_ROWS) if hasattr(X, "sample") else X
 
     feature_names = (
-        list(X_sample.columns) if hasattr(X_sample, "columns")
+        list(X_sample.columns)
+        if hasattr(X_sample, "columns")
         else [f"feature_{i}" for i in range(np.asarray(X_sample).shape[1])]
     )
 
@@ -117,7 +118,11 @@ def _compute_with_kernel_explainer(
 
     # KernelExplainer needs a small background set, not the full sample.
     background_size = min(50, len(X_sample))
-    background = shap.sample(X_sample, background_size) if hasattr(shap, "sample") else X_sample[:background_size]
+    background = (
+        shap.sample(X_sample, background_size)
+        if hasattr(shap, "sample")
+        else X_sample[:background_size]
+    )
 
     explainer = shap.KernelExplainer(predict_fn, background)
     shap_values = explainer.shap_values(X_sample, silent=True)
@@ -137,5 +142,3 @@ def _compute_with_kernel_explainer(
         "base_value": float(base_value),
         "explainer_type": "kernel",
     }
-
-

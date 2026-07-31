@@ -75,6 +75,3 @@ def set_log_level(level: int | str) -> None:
     """
     _configure_root_logger()
     logging.getLogger("mentis").setLevel(level)
-
-
-    

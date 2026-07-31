@@ -63,12 +63,14 @@ def compute_permutation_importance(
             n_repeats=n_repeats,
             random_state=RANDOM_STATE,
         )
-    except Exception as exc:  
+    except Exception as exc:
         raise ExplainabilityError(f"Could not compute permutation importance: {exc}") from exc
 
-    feature_names = list(X.columns) if hasattr(X, "columns") else [
-        f"feature_{i}" for i in range(np.asarray(X).shape[1])
-    ]
+    feature_names = (
+        list(X.columns)
+        if hasattr(X, "columns")
+        else [f"feature_{i}" for i in range(np.asarray(X).shape[1])]
+    )
 
     importances = {
         str(name): {
@@ -76,12 +78,10 @@ def compute_permutation_importance(
             "importance_std": float(std),
         }
         for name, mean, std in zip(
-            feature_names, result.importances_mean, result.importances_std
+            feature_names, result.importances_mean, result.importances_std, strict=False
         )
     }
 
     return dict(
         sorted(importances.items(), key=lambda item: item[1]["importance_mean"], reverse=True)
     )
-
-

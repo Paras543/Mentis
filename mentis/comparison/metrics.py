@@ -8,8 +8,6 @@ change in one place.
 
 from __future__ import annotations
 
-from typing import Any
-
 import numpy as np
 from sklearn.metrics import (
     accuracy_score,
@@ -179,5 +177,3 @@ def is_higher_better(metric_name: str) -> bool:
     """
     lower_is_better = {"rmse", "mae", "mape"}
     return metric_name not in lower_is_better
-
-

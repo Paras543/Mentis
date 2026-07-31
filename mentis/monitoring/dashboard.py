@@ -101,7 +101,9 @@ class ModelMonitor:
 
         Examples:
             >>> monitor = ModelMonitor()
-            >>> snapshot = monitor.snapshot(df, preds, {"accuracy": 0.80}, {"accuracy": 0.90})  # doctest: +SKIP
+            >>> snapshot = monitor.snapshot(
+            ...     df, preds, {"accuracy": 0.80}, {"accuracy": 0.90}
+            ... )  # doctest: +SKIP
             >>> snapshot.degraded  # doctest: +SKIP
             True
         """
@@ -166,7 +168,3 @@ class ModelMonitor:
             "missing_pct": round(missing_pct, 2),
             "duplicate_pct": round(duplicate_pct, 2),
         }
-    
-
-
-    

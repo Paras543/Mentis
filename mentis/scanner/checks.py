@@ -44,9 +44,7 @@ class MissingValuesCheck(BaseCheck):
                 continue
             if pct >= self.threshold:
                 severity = SEVERITY_CRITICAL
-                suggestion = (
-                    "Consider dropping this column or applying an imputation strategy."
-                )
+                suggestion = "Consider dropping this column or applying an imputation strategy."
             elif pct >= 0.10:
                 severity = SEVERITY_WARNING
                 suggestion = "Consider imputing missing values — missing rate is notable."
@@ -180,10 +178,7 @@ class NearZeroVarianceCheck(BaseCheck):
             freq_ratio = float(value_counts.iloc[0] / value_counts.iloc[1])
             unique_pct = float(series.nunique() / n_rows)
 
-            if (
-                freq_ratio > self.freq_ratio_threshold
-                and unique_pct < self.unique_pct_threshold
-            ):
+            if freq_ratio > self.freq_ratio_threshold and unique_pct < self.unique_pct_threshold:
                 findings.append(
                     Finding(
                         check_name=self.name,
@@ -214,9 +209,7 @@ class HighCorrelationCheck(BaseCheck):
             return []
 
         corr_matrix = numeric_df.corr().abs()
-        upper = corr_matrix.where(
-            np.triu(np.ones(corr_matrix.shape), k=1).astype(bool)
-        )
+        upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(bool))
 
         findings: list[Finding] = []
         for col in upper.columns:
@@ -232,7 +225,10 @@ class HighCorrelationCheck(BaseCheck):
                         ),
                         columns=[str(other), str(col)],
                         details={"correlation": float(upper.loc[other, col])},
-                        suggestion=f"Consider dropping one of '{other}' or '{col}' to reduce multicollinearity.",
+                        suggestion=(
+                            f"Consider dropping one of '{other}' or '{col}'"
+                            " to reduce multicollinearity."
+                        ),
                     )
                 )
         return findings
@@ -271,7 +267,9 @@ class OutlierCheck(BaseCheck):
                         ),
                         columns=[str(col)],
                         details={"outlier_count": n_outliers, "outlier_pct": pct},
-                        suggestion="Investigate whether these are data errors or valid extreme values.",
+                        suggestion=(
+                            "Investigate whether these are data errors" " or valid extreme values."
+                        ),
                     )
                 )
         return findings
@@ -296,7 +294,10 @@ class InfiniteValuesCheck(BaseCheck):
                         message=f"Column '{col}' contains {n_inf} infinite value(s).",
                         columns=[str(col)],
                         details={"infinite_count": n_inf},
-                        suggestion="Replace infinite values with NaN or a bounded value before training.",
+                        suggestion=(
+                            "Replace infinite values with NaN or a bounded value"
+                            " before training."
+                        ),
                     )
                 )
         return findings
@@ -321,14 +322,19 @@ class IDColumnCheck(BaseCheck):
 
         for col in df.columns:
             unique_pct = float(df[col].nunique(dropna=True) / n_rows)
-            name_hint = str(col).lower() in {"id", "uuid", "index", "row_id"} or str(col).lower().endswith("_id")
+            name_hint = str(col).lower() in {"id", "uuid", "index", "row_id"} or str(
+                col
+            ).lower().endswith("_id")
 
             if unique_pct >= self.uniqueness_threshold or name_hint:
                 findings.append(
                     Finding(
                         check_name=self.name,
                         severity=SEVERITY_INFO,
-                        message=f"Column '{col}' looks like an identifier column ({unique_pct:.1%} unique).",
+                        message=(
+                            f"Column '{col}' looks like an identifier column"
+                            f" ({unique_pct:.1%} unique)."
+                        ),
                         columns=[str(col)],
                         details={"unique_pct": unique_pct, "name_hint": name_hint},
                         suggestion=f"Exclude '{col}' from model features to avoid leakage/noise.",
@@ -368,7 +374,10 @@ class TargetImbalanceCheck(BaseCheck):
                         f"represents {majority_pct:.1%} of samples."
                     ),
                     columns=[str(target)],
-                    details={"majority_class_pct": majority_pct, "class_distribution": value_counts.to_dict()},
+                    details={
+                        "majority_class_pct": majority_pct,
+                        "class_distribution": value_counts.to_dict(),
+                    },
                     suggestion="Consider resampling, class weighting, or stratified evaluation.",
                 )
             ]
@@ -412,7 +421,9 @@ class DataLeakageCheck(BaseCheck):
                         ),
                         columns=[str(col), str(target)],
                         details={"correlation": corr},
-                        suggestion=f"Investigate whether '{col}' would be available at prediction time.",
+                        suggestion=(
+                            f"Investigate whether '{col}' would be available" " at prediction time."
+                        ),
                     )
                 )
         return findings
@@ -445,6 +456,3 @@ class MixedTypesCheck(BaseCheck):
                     )
                 )
         return findings
-    
-
-    

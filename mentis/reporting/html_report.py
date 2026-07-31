@@ -5,7 +5,6 @@ HTML report rendering for Mentis, using Jinja2 templates.
 from __future__ import annotations
 
 import os
-from datetime import datetime
 from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -73,9 +72,8 @@ class HtmlReportRenderer:
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(html)
         except OSError as exc:
-            raise ReportGenerationError(f"Failed to write HTML report to '{output_path}': {exc}") from exc
+            raise ReportGenerationError(
+                f"Failed to write HTML report to '{output_path}': {exc}"
+            ) from exc
 
         return output_path
-    
-
-    

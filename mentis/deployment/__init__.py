@@ -6,4 +6,3 @@ Mentis.
 from mentis.deployment.checker import DeploymentChecker, DeploymentFinding, DeploymentResult
 
 __all__ = ["DeploymentChecker", "DeploymentResult", "DeploymentFinding"]
-

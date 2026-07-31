@@ -72,10 +72,10 @@ def validate_matching_length(*arrays: object, names: list[str] | None = None) ->
     Examples:
         >>> validate_matching_length([1, 2, 3], [4, 5, 6])
     """
-    lengths = [len(a) for a in arrays]  
+    lengths = [len(a) for a in arrays]  # type: ignore[arg-type]
     if len(set(lengths)) > 1:
         labels = names or [f"array_{i}" for i in range(len(arrays))]
-        pairs = ", ".join(f"{n}={l}" for n, l in zip(labels, lengths))
+        pairs = ", ".join(f"{n}={item_len}" for n, item_len in zip(labels, lengths, strict=False))
         raise ValidationError(f"Length mismatch between inputs: {pairs}.")
 
 
@@ -96,8 +96,3 @@ def validate_task_type(task: str) -> None:
     valid_tasks = {"classification", "regression"}
     if task not in valid_tasks:
         raise ValidationError(f"Unsupported task '{task}'. Must be one of {sorted(valid_tasks)}.")
-    
-
-    
-
-

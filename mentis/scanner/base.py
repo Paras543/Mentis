@@ -14,7 +14,6 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-
 from mentis.scanner.result import Finding
 
 

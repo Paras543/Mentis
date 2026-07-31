@@ -67,7 +67,8 @@ class BiasDetector:
 
     Examples:
         >>> detector = BiasDetector()
-        >>> results = detector.detect(y_true, y_pred, sensitive_features={"gender": gender_col})  # doctest: +SKIP
+        >>> feats = {"gender": gender_col}  # doctest: +SKIP
+        >>> results = detector.detect(y_true, y_pred, feats)  # doctest: +SKIP
     """
 
     def detect(
@@ -131,7 +132,9 @@ class BiasDetector:
 
             try:
                 dp_diff = float(
-                    demographic_parity_difference(y_true_arr, y_pred_arr, sensitive_features=group_arr)
+                    demographic_parity_difference(
+                        y_true_arr, y_pred_arr, sensitive_features=group_arr
+                    )
                 )
                 eo_diff = float(
                     equalized_odds_difference(y_true_arr, y_pred_arr, sensitive_features=group_arr)
@@ -152,9 +155,7 @@ class BiasDetector:
                     y_pred=y_pred_arr,
                     sensitive_features=group_arr,
                 )
-                selection_by_group = {
-                    str(k): float(v) for k, v in selection_frame.by_group.items()
-                }
+                selection_by_group = {str(k): float(v) for k, v in selection_frame.by_group.items()}
 
                 results.append(
                     FairnessResult(
@@ -172,6 +173,3 @@ class BiasDetector:
             raise ValidationError("Fairness computation failed for all sensitive features.")
 
         return results
-    
-
-    

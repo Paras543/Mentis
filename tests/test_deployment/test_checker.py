@@ -4,10 +4,6 @@ Tests for mentis/deployment/checker.py — DeploymentChecker.
 
 from __future__ import annotations
 
-import os
-
-import pytest
-
 from mentis.deployment.checker import DeploymentChecker, DeploymentResult
 
 
@@ -34,7 +30,9 @@ class TestDeploymentChecker:
 
     def test_detects_fastapi_framework(self, tmp_path):
         app_file = tmp_path / "main.py"
-        app_file.write_text("from fastapi import FastAPI\napp = FastAPI()\n@app.get('/health')\ndef health(): return {'status': 'ok'}")
+        app_file.write_text(
+            "from fastapi import FastAPI\napp = FastAPI()\n@app.get('/health')\ndef health(): return {'status': 'ok'}"
+        )
 
         checker = DeploymentChecker()
         result = checker.check(str(tmp_path))

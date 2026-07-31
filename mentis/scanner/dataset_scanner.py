@@ -12,7 +12,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import numpy as np
 import pandas as pd
 
 from mentis.constants import CATEGORICAL_DTYPES, DATETIME_DTYPES, NUMERIC_DTYPES
@@ -196,6 +195,3 @@ class DatasetScanner:
             "severity_counts": severity_counts,
             "checks_triggered": checks_triggered,
         }
-    
-
-    

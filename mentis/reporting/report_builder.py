@@ -11,7 +11,7 @@ format never touches this aggregation logic.
 from __future__ import annotations
 
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from mentis.exceptions import ReportGenerationError
@@ -31,7 +31,9 @@ class ReportBuilder:
 
     Examples:
         >>> builder = ReportBuilder()
-        >>> path = builder.build(guardian, output_dir="mentis_reports", fmt="html")  # doctest: +SKIP
+            >>> path = builder.build(
+            ...     guardian, output_dir="reports", fmt="html"
+            ... )  # doctest: +SKIP
     """
 
     def build(
@@ -124,19 +126,40 @@ class ReportBuilder:
         monitoring = getattr(guardian, "last_monitoring_result", None)
 
         context: dict[str, Any] = {
-            "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-            "scan": scan.to_dict() if hasattr(scan, "to_dict") else scan,
-            "comparison": comparison.to_dict() if hasattr(comparison, "to_dict") else comparison,
+            "generated_at": datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC"),
+            "scan": scan.to_dict() if scan is not None and hasattr(scan, "to_dict") else scan,
+            "comparison": (
+                comparison.to_dict()
+                if comparison is not None and hasattr(comparison, "to_dict")
+                else comparison
+            ),
             "explain": explain,
-            "audit": audit.to_dict() if hasattr(audit, "to_dict") else audit,
-            "deployment": deployment.to_dict() if hasattr(deployment, "to_dict") else deployment,
+            "audit": audit.to_dict() if audit is not None and hasattr(audit, "to_dict") else audit,
+            "deployment": (
+                deployment.to_dict()
+                if deployment is not None and hasattr(deployment, "to_dict")
+                else deployment
+            ),
             "bias": [b.to_dict() for b in bias] if bias else None,
             "drift": drift,
-            "monitoring": monitoring.to_dict() if hasattr(monitoring, "to_dict") else monitoring,
+            "monitoring": (
+                monitoring.to_dict()
+                if monitoring is not None and hasattr(monitoring, "to_dict")
+                else monitoring
+            ),
         }
         context["has_any_results"] = any(
             context[key] is not None
-            for key in ("scan", "comparison", "explain", "audit", "deployment", "bias", "drift", "monitoring")
+            for key in (
+                "scan",
+                "comparison",
+                "explain",
+                "audit",
+                "deployment",
+                "bias",
+                "drift",
+                "monitoring",
+            )
         )
         return context
 
@@ -168,9 +191,8 @@ class ReportBuilder:
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write("\n".join(lines))
         except OSError as exc:
-            raise ReportGenerationError(f"Failed to write Markdown report to '{output_path}': {exc}") from exc
+            raise ReportGenerationError(
+                f"Failed to write Markdown report to '{output_path}': {exc}"
+            ) from exc
 
         return output_path
-    
-
-    

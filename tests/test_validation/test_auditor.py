@@ -4,11 +4,7 @@ Tests for mentis/validation/auditor.py — PipelineAuditor.
 
 from __future__ import annotations
 
-import os
-
-import pytest
-
-from mentis.validation.auditor import AuditFinding, AuditResult, PipelineAuditor
+from mentis.validation.auditor import AuditResult, PipelineAuditor
 
 
 class TestPipelineAuditor:
@@ -53,6 +49,7 @@ class TestPipelineAuditor:
 
     def test_all_files_present_score_100(self, tmp_path):
         from mentis.validation.auditor import _CHECKS
+
         for name, rel_path, *rest in _CHECKS:
             p = tmp_path / rel_path
             if rel_path in (".github/workflows", "tests", "models", "k8s"):

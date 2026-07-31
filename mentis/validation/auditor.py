@@ -17,17 +17,59 @@ logger = get_logger(__name__)
 # (check_name, path/glob, severity, weight, suggestion)
 _CHECKS: list[tuple[str, str, str, int, str]] = [
     ("README", "README.md", SEVERITY_WARNING, 5, "Add a README.md describing the project."),
-    ("requirements", "requirements.txt", SEVERITY_WARNING, 5, "Add requirements.txt or pyproject.toml dependencies."),
-    ("gitignore", ".gitignore", SEVERITY_INFO, 3, "Add a .gitignore to avoid committing artifacts/secrets."),
-    ("dockerfile", "Dockerfile", SEVERITY_WARNING, 8, "Add a Dockerfile for reproducible deployment."),
+    (
+        "requirements",
+        "requirements.txt",
+        SEVERITY_WARNING,
+        5,
+        "Add requirements.txt or pyproject.toml dependencies.",
+    ),
+    (
+        "gitignore",
+        ".gitignore",
+        SEVERITY_INFO,
+        3,
+        "Add a .gitignore to avoid committing artifacts/secrets.",
+    ),
+    (
+        "dockerfile",
+        "Dockerfile",
+        SEVERITY_WARNING,
+        8,
+        "Add a Dockerfile for reproducible deployment.",
+    ),
     ("tests", "tests", SEVERITY_CRITICAL, 15, "Add a tests/ directory with automated tests."),
     ("ci_cd", ".github/workflows", SEVERITY_CRITICAL, 15, "Add CI/CD via GitHub Actions."),
     ("logging_config", "logging.conf", SEVERITY_INFO, 3, "Add explicit logging configuration."),
-    ("config_files", "config.yaml", SEVERITY_INFO, 5, "Add a config file for environment-specific settings."),
-    ("env_vars", ".env.example", SEVERITY_WARNING, 5, "Add a .env.example documenting required env vars."),
-    ("model_artifact", "models", SEVERITY_INFO, 5, "Add a models/ directory for versioned model artifacts."),
+    (
+        "config_files",
+        "config.yaml",
+        SEVERITY_INFO,
+        5,
+        "Add a config file for environment-specific settings.",
+    ),
+    (
+        "env_vars",
+        ".env.example",
+        SEVERITY_WARNING,
+        5,
+        "Add a .env.example documenting required env vars.",
+    ),
+    (
+        "model_artifact",
+        "models",
+        SEVERITY_INFO,
+        5,
+        "Add a models/ directory for versioned model artifacts.",
+    ),
     ("versioning", "CHANGELOG.md", SEVERITY_INFO, 3, "Add a CHANGELOG.md to track versions."),
-    ("pre_commit", ".pre-commit-config.yaml", SEVERITY_INFO, 3, "Add pre-commit hooks for code quality."),
+    (
+        "pre_commit",
+        ".pre-commit-config.yaml",
+        SEVERITY_INFO,
+        3,
+        "Add pre-commit hooks for code quality.",
+    ),
     ("makefile", "Makefile", SEVERITY_INFO, 3, "Add a Makefile for common dev commands."),
 ]
 
@@ -70,7 +112,8 @@ class AuditResult:
     def failed(self, severity: str | None = None) -> list[AuditFinding]:
         """Return failed findings, optionally filtered by severity."""
         return [
-            f for f in self.findings
+            f
+            for f in self.findings
             if not f.passed and (severity is None or f.severity == severity)
         ]
 
@@ -133,6 +176,3 @@ class PipelineAuditor:
 
         score = round((earned / _MAX_SCORE) * 100, 1) if _MAX_SCORE else 0.0
         return AuditResult(project_path=project_path, findings=findings, score=score)
-    
-
-    

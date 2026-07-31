@@ -67,7 +67,11 @@ class TestBiasDetectorRun:
         results = BiasDetector().detect(y_true, y_pred, sensitive_features={"group": groups})
         d = results[0].to_dict()
 
-        for key in ("sensitive_feature", "demographic_parity_difference",
-                    "equal_opportunity_difference", "equalized_odds_difference",
-                    "selection_rate_by_group"):
+        for key in (
+            "sensitive_feature",
+            "demographic_parity_difference",
+            "equal_opportunity_difference",
+            "equalized_odds_difference",
+            "selection_rate_by_group",
+        ):
             assert key in d

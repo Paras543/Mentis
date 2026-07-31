@@ -9,7 +9,9 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-evidently = pytest.importorskip("evidently", reason="evidently not installed — skipping drift tests")
+evidently = pytest.importorskip(
+    "evidently", reason="evidently not installed — skipping drift tests"
+)
 
 from mentis.exceptions import ValidationError
 from mentis.monitoring.drift import DriftDetector

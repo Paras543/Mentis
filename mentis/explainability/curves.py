@@ -15,7 +15,11 @@ import numpy as np
 from sklearn.calibration import calibration_curve as sk_calibration_curve
 from sklearn.metrics import (
     confusion_matrix as sk_confusion_matrix,
+)
+from sklearn.metrics import (
     precision_recall_curve as sk_pr_curve,
+)
+from sklearn.metrics import (
     roc_curve as sk_roc_curve,
 )
 from sklearn.model_selection import learning_curve as sk_learning_curve
@@ -72,7 +76,9 @@ def compute_roc_curve(y_true: np.ndarray, y_score: np.ndarray) -> dict[str, list
         True
     """
     if len(np.unique(y_true)) < 2:
-        raise ExplainabilityError("Could not compute ROC curve: y_true must contain at least two classes.")
+        raise ExplainabilityError(
+            "Could not compute ROC curve: y_true must contain at least two classes."
+        )
 
     try:
         fpr, tpr, thresholds = sk_roc_curve(y_true, y_score)
@@ -238,5 +244,3 @@ def compute_learning_curve(
         "val_scores_mean": val_scores.mean(axis=1).tolist(),
         "val_scores_std": val_scores.std(axis=1).tolist(),
     }
-
-

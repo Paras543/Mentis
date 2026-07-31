@@ -4,9 +4,6 @@ Tests for mentis/explainability/permutation.py — permutation importance.
 
 from __future__ import annotations
 
-import numpy as np
-import pytest
-
 from mentis.explainability.permutation import compute_permutation_importance
 
 

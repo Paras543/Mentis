@@ -122,18 +122,25 @@ class TestComputeResiduals:
 class TestComputeLearningCurve:
     def test_returns_required_keys(self, fitted_clf, X_train_clf, y_train_clf):
         from sklearn.tree import DecisionTreeClassifier
+
         result = compute_learning_curve(
             DecisionTreeClassifier(random_state=42),
             X_train_clf,
             y_train_clf,
             cv=2,
         )
-        for key in ("train_sizes", "train_scores_mean", "train_scores_std",
-                    "val_scores_mean", "val_scores_std"):
+        for key in (
+            "train_sizes",
+            "train_scores_mean",
+            "train_scores_std",
+            "val_scores_mean",
+            "val_scores_std",
+        ):
             assert key in result
 
     def test_train_sizes_ascending(self, X_train_clf, y_train_clf):
         from sklearn.tree import DecisionTreeClassifier
+
         result = compute_learning_curve(
             DecisionTreeClassifier(random_state=42),
             X_train_clf,

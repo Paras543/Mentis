@@ -12,8 +12,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Literal
 
-import yaml
-from pydantic import BaseModel, Field, ValidationError as PydanticValidationError
+import yaml  # type: ignore[import-untyped]
+from pydantic import BaseModel, Field
+from pydantic import ValidationError as PydanticValidationError
 
 from mentis.exceptions import ConfigurationError
 
@@ -93,7 +94,7 @@ class MentisConfig(BaseModel):
     report: ReportConfig = Field(default_factory=ReportConfig)
 
     @classmethod
-    def from_yaml(cls, path: str | Path) -> "MentisConfig":
+    def from_yaml(cls, path: str | Path) -> MentisConfig:
         """
         Load a `MentisConfig` from a YAML file.
 
@@ -127,6 +128,3 @@ class MentisConfig(BaseModel):
     def to_dict(self) -> dict[str, Any]:
         """Return a plain-dict representation of this configuration."""
         return self.model_dump()
-    
-
-    

@@ -8,7 +8,7 @@ training loop itself.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 from typing import Any
 
 from mentis.comparison.metrics import is_higher_better
@@ -110,7 +110,10 @@ class Leaderboard:
     def __repr__(self) -> str:
         best = self.best_model()
         best_name = best.model_name if best else "N/A"
-        return f"<Leaderboard task={self.task!r} best_model={best_name!r} n_models={len(self.results)}>"
+        return (
+            f"<Leaderboard task={self.task!r} best_model={best_name!r}"
+            f" n_models={len(self.results)}>"
+        )
 
 
 def build_leaderboard(
@@ -145,11 +148,10 @@ def build_leaderboard(
     failed = [r for r in model_results if r.error is not None]
 
     successful.sort(
-        key=lambda r: r.metrics.get(primary_metric, float("-inf") if higher_better else float("inf")),
+        key=lambda r: r.metrics.get(
+            primary_metric, float("-inf") if higher_better else float("inf")
+        ),
         reverse=higher_better,
     )
 
     return Leaderboard(task=task, primary_metric=primary_metric, results=successful + failed)
-
-
-

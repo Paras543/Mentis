@@ -9,8 +9,8 @@ from __future__ import annotations
 
 import os
 import time
+from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Any, Iterator
 
 import numpy as np
 import pandas as pd
@@ -162,7 +162,6 @@ def detect_task_type(y: pd.Series | np.ndarray) -> str:
     n_unique = series.nunique(dropna=True)
     n_total = len(series)
 
-    
     if n_unique <= 20 or (n_total > 0 and n_unique / n_total < 0.05):
         return "classification"
 
@@ -193,6 +192,3 @@ def truncate_dataframe_for_heavy_ops(df: pd.DataFrame, max_rows: int) -> pd.Data
     if len(df) <= max_rows:
         return df
     return df.sample(n=max_rows, random_state=42)
-
-
-

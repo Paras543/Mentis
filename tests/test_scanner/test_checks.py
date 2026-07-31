@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-import pytest
 
 from mentis.scanner.checks import (
     ConstantColumnsCheck,
@@ -22,10 +21,9 @@ from mentis.scanner.checks import (
     OutlierCheck,
     TargetImbalanceCheck,
 )
-from mentis.scanner.result import Finding
-
 
 # ── MissingValuesCheck ────────────────────────────────────────────────────────
+
 
 class TestMissingValuesCheck:
     def test_no_missing_returns_empty(self, clean_df):
@@ -60,11 +58,13 @@ class TestMissingValuesCheck:
         assert findings[0].severity == "warning"
 
     def test_multiple_columns_flagged(self):
-        df = pd.DataFrame({
-            "a": [None] * 50 + [1.0] * 50,
-            "b": [None] * 20 + [2.0] * 80,
-            "c": [1.0] * 100,
-        })
+        df = pd.DataFrame(
+            {
+                "a": [None] * 50 + [1.0] * 50,
+                "b": [None] * 20 + [2.0] * 80,
+                "c": [1.0] * 100,
+            }
+        )
         findings = MissingValuesCheck().run(df)
         flagged_cols = {f.columns[0] for f in findings}
         assert "a" in flagged_cols
@@ -73,6 +73,7 @@ class TestMissingValuesCheck:
 
 
 # ── DuplicateRowsCheck ────────────────────────────────────────────────────────
+
 
 class TestDuplicateRowsCheck:
     def test_no_duplicates_returns_empty(self, clean_df):
@@ -100,6 +101,7 @@ class TestDuplicateRowsCheck:
 
 # ── DuplicateColumnsCheck ─────────────────────────────────────────────────────
 
+
 class TestDuplicateColumnsCheck:
     def test_no_duplicate_columns(self, clean_df):
         findings = DuplicateColumnsCheck().run(clean_df)
@@ -118,6 +120,7 @@ class TestDuplicateColumnsCheck:
 
 
 # ── ConstantColumnsCheck ──────────────────────────────────────────────────────
+
 
 class TestConstantColumnsCheck:
     def test_no_constant_columns(self, clean_df):
@@ -138,6 +141,7 @@ class TestConstantColumnsCheck:
 
 # ── NearZeroVarianceCheck ─────────────────────────────────────────────────────
 
+
 class TestNearZeroVarianceCheck:
     def test_normal_data_no_findings(self, clean_df):
         findings = NearZeroVarianceCheck().run(clean_df)
@@ -155,6 +159,7 @@ class TestNearZeroVarianceCheck:
 
 
 # ── HighCorrelationCheck ──────────────────────────────────────────────────────
+
 
 class TestHighCorrelationCheck:
     def test_no_high_correlation(self, clean_df):
@@ -175,6 +180,7 @@ class TestHighCorrelationCheck:
 
 
 # ── OutlierCheck ──────────────────────────────────────────────────────────────
+
 
 class TestOutlierCheck:
     def test_no_outliers(self):
@@ -197,6 +203,7 @@ class TestOutlierCheck:
 
 
 # ── InfiniteValuesCheck ───────────────────────────────────────────────────────
+
 
 class TestInfiniteValuesCheck:
     def test_no_infinite_values(self, clean_df):
@@ -222,6 +229,7 @@ class TestInfiniteValuesCheck:
 
 # ── IDColumnCheck ─────────────────────────────────────────────────────────────
 
+
 class TestIDColumnCheck:
     def test_id_column_by_uniqueness(self):
         df = pd.DataFrame({"user_id": range(100), "age": [25] * 100})
@@ -240,6 +248,7 @@ class TestIDColumnCheck:
 
 
 # ── TargetImbalanceCheck ──────────────────────────────────────────────────────
+
 
 class TestTargetImbalanceCheck:
     def test_balanced_target_no_findings(self, clean_df):
@@ -261,6 +270,7 @@ class TestTargetImbalanceCheck:
 
 
 # ── DataLeakageCheck ──────────────────────────────────────────────────────────
+
 
 class TestDataLeakageCheck:
     def test_no_leakage(self, clean_df):
@@ -284,6 +294,7 @@ class TestDataLeakageCheck:
 
 
 # ── MixedTypesCheck ───────────────────────────────────────────────────────────
+
 
 class TestMixedTypesCheck:
     def test_uniform_types_no_findings(self, clean_df):

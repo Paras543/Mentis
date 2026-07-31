@@ -8,7 +8,8 @@ one-line addition here, following the Open/Closed Principle.
 
 from __future__ import annotations
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from sklearn.ensemble import (
     ExtraTreesClassifier,
@@ -171,9 +172,3 @@ def get_model_zoo(task: str, selected: list[str] | None = None) -> dict[str, Any
     if task == "regression":
         return get_regression_models(selected)
     raise ValueError(f"Unsupported task type: {task!r}")
-
-
-
-
-
-

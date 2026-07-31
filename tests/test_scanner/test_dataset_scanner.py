@@ -4,7 +4,6 @@ Tests for mentis/scanner/dataset_scanner.py — the DatasetScanner orchestrator.
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -143,6 +142,7 @@ class TestDatasetScannerColumnProfiles:
 class TestDatasetScannerCustomChecks:
     def test_custom_check_list(self, clean_df):
         from mentis.scanner.checks import DuplicateRowsCheck
+
         scanner = DatasetScanner(checks=[DuplicateRowsCheck()])
         result = scanner.scan(clean_df)
         # Only DuplicateRows can fire; clean_df has none
@@ -151,14 +151,15 @@ class TestDatasetScannerCustomChecks:
     def test_bad_check_doesnt_crash_scanner(self, clean_df):
         """A check that throws must not prevent others from running."""
         from mentis.scanner.base import BaseCheck
-        from mentis.scanner.result import Finding
 
         class BrokenCheck(BaseCheck):
             name = "broken"
+
             def run(self, df, **ctx):
                 raise RuntimeError("intentional failure")
 
         from mentis.scanner.checks import DuplicateRowsCheck
+
         scanner = DatasetScanner(checks=[BrokenCheck(), DuplicateRowsCheck()])
         # Should not raise; BrokenCheck failure is logged and ignored
         result = scanner.scan(clean_df)

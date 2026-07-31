@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import os
 
-import pandas as pd
 import pytest
 
 from mentis import Guardian
@@ -36,8 +35,18 @@ class TestReportBuilderContext:
     def test_context_has_required_keys(self, guardian_with_scan):
         builder = ReportBuilder()
         ctx = builder.build_context(guardian_with_scan)
-        for key in ("generated_at", "scan", "comparison", "explain", "audit",
-                    "deployment", "bias", "drift", "monitoring", "has_any_results"):
+        for key in (
+            "generated_at",
+            "scan",
+            "comparison",
+            "explain",
+            "audit",
+            "deployment",
+            "bias",
+            "drift",
+            "monitoring",
+            "has_any_results",
+        ):
             assert key in ctx
 
     def test_has_any_results_true_after_scan(self, guardian_with_scan):
@@ -74,31 +83,23 @@ class TestReportBuilderUnsupportedFormat:
 
 class TestReportBuilderHtml:
     def test_html_report_created(self, guardian_with_scan, tmp_path):
-        path = ReportBuilder().build(
-            guardian_with_scan, output_dir=str(tmp_path), fmt="html"
-        )
+        path = ReportBuilder().build(guardian_with_scan, output_dir=str(tmp_path), fmt="html")
         assert os.path.exists(path)
         assert path.endswith(".html")
 
     def test_html_report_nonempty(self, guardian_with_scan, tmp_path):
-        path = ReportBuilder().build(
-            guardian_with_scan, output_dir=str(tmp_path), fmt="html"
-        )
+        path = ReportBuilder().build(guardian_with_scan, output_dir=str(tmp_path), fmt="html")
         content = open(path).read()
         assert len(content) > 100
 
     def test_html_contains_mentis_heading(self, guardian_with_scan, tmp_path):
-        path = ReportBuilder().build(
-            guardian_with_scan, output_dir=str(tmp_path), fmt="html"
-        )
+        path = ReportBuilder().build(guardian_with_scan, output_dir=str(tmp_path), fmt="html")
         content = open(path).read()
         assert "Mentis" in content
 
     def test_html_has_inline_styles(self, guardian_with_scan, tmp_path):
         """After the CSS fix, styles must be inlined (no broken external link)."""
-        path = ReportBuilder().build(
-            guardian_with_scan, output_dir=str(tmp_path), fmt="html"
-        )
+        path = ReportBuilder().build(guardian_with_scan, output_dir=str(tmp_path), fmt="html")
         content = open(path).read()
         assert "<style>" in content
         # External stylesheet reference should NOT be present (it would 404)
@@ -107,16 +108,12 @@ class TestReportBuilderHtml:
 
 class TestReportBuilderMarkdown:
     def test_markdown_report_created(self, guardian_with_scan, tmp_path):
-        path = ReportBuilder().build(
-            guardian_with_scan, output_dir=str(tmp_path), fmt="markdown"
-        )
+        path = ReportBuilder().build(guardian_with_scan, output_dir=str(tmp_path), fmt="markdown")
         assert os.path.exists(path)
         assert path.endswith(".md")
 
     def test_markdown_contains_section_headers(self, guardian_with_scan, tmp_path):
-        path = ReportBuilder().build(
-            guardian_with_scan, output_dir=str(tmp_path), fmt="markdown"
-        )
+        path = ReportBuilder().build(guardian_with_scan, output_dir=str(tmp_path), fmt="markdown")
         content = open(path).read()
         assert "# Mentis Report" in content
         assert "## Dataset Scan" in content
@@ -130,15 +127,11 @@ class TestReportBuilderMarkdown:
 
 class TestReportBuilderAuditDeployment:
     def test_audit_in_report(self, guardian_with_audit, tmp_path):
-        path = ReportBuilder().build(
-            guardian_with_audit, output_dir=str(tmp_path), fmt="html"
-        )
+        path = ReportBuilder().build(guardian_with_audit, output_dir=str(tmp_path), fmt="html")
         content = open(path).read()
         assert "Pipeline Audit" in content or "Audit" in content
 
     def test_deployment_in_report(self, guardian_with_deployment, tmp_path):
-        path = ReportBuilder().build(
-            guardian_with_deployment, output_dir=str(tmp_path), fmt="html"
-        )
+        path = ReportBuilder().build(guardian_with_deployment, output_dir=str(tmp_path), fmt="html")
         content = open(path).read()
         assert "Deployment" in content

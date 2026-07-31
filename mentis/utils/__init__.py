@@ -35,5 +35,3 @@ __all__ = [
     "detect_task_type",
     "truncate_dataframe_for_heavy_ops",
 ]
-
-

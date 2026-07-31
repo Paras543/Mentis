@@ -24,5 +24,3 @@ __all__ = [
     "compute_residuals",
     "compute_learning_curve",
 ]
-
-

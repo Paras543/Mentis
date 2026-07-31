@@ -15,10 +15,9 @@ from typing import Any
 import numpy as np
 from sklearn.model_selection import cross_val_score
 
-from mentis.comparison.leaderboard import ModelResult, build_leaderboard, Leaderboard
+from mentis.comparison.leaderboard import Leaderboard, ModelResult, build_leaderboard
 from mentis.comparison.metrics import compute_metrics, primary_metric_for_task
 from mentis.comparison.model_zoo import get_model_zoo
-from mentis.constants import RANDOM_STATE
 from mentis.exceptions import ModelError
 from mentis.utils.helpers import timer
 from mentis.utils.logger import get_logger
@@ -189,13 +188,11 @@ class ModelTrainer:
             return None
 
         try:
-            feature_names = list(X_train.columns) if hasattr(X_train, "columns") else [
-                f"feature_{i}" for i in range(len(importances))
-            ]
-            return {str(f): float(v) for f, v in zip(feature_names, importances)}
+            feature_names = (
+                list(X_train.columns)
+                if hasattr(X_train, "columns")
+                else [f"feature_{i}" for i in range(len(importances))]
+            )
+            return {str(f): float(v) for f, v in zip(feature_names, importances, strict=False)}
         except Exception:  # noqa: BLE001 - importances are a bonus, not critical
             return None
-        
-
-
-        
